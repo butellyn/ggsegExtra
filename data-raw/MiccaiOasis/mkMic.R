@@ -16,11 +16,11 @@ mri_vol2surf("HarvardOxford-Cortical",
              outfile = "test.lh.mgh",
              opts = c("--mni152reg", "--hemi lh", "--projfrac 0.5"),
              verbose = TRUE)
-# ^ This function doesn't seem to exist in the freesurfer package
-# Trouble installing V8
+# January 22, 2020: ^ This function doesn't seem to exist in the freesurfer package
+# January 22, 2020: Trouble installing V8
 
 
-OUTDIR="/Users/butellyn/Documents/hiLo/data/ggseg_miccai"
+OUTDIR=""
 pics <- list.files(path=paste0(OUTDIR, "/miccaiPics"), full.names = TRUE)
 pics <- pics[!(pics %in% grep("fsaverage_", pics, value=TRUE))]
 

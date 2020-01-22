@@ -1,6 +1,6 @@
-OUTDIR=/Users/butellyn/Documents/hiLo/data/ggseg_miccai
-INDIR=/Users/butellyn/Documents/hiLo/data/hilo_images
-SCRDIR=/Users/butellyn/Documents/hiLo/scripts/13_FigureProduction/scripts
+OUTDIR=`pwd`
+INDIR=`pwd`
+SCRDIR=`pwd`
 
 
 # Subset parcellation to only include cortical ROIs
@@ -60,7 +60,7 @@ sudo mris_label2annot --sd ${SUBJECTS_DIR} --s fsaverage --ctab ${OUTDIR}/output
 freeview --surface ${FREESURFER_HOME}/subjects/fsaverage/surf/rh.inflated:annot=${FREESURFER_HOME}/subjects/fsaverage/label/rh.mic.annot --surface ${FREESURFER_HOME}/subjects/fsaverage/surf/lh.inflated:annot=${FREESURFER_HOME}/subjects/fsaverage/label/lh.mic.annot
 
 # Create gifti surface and labels on surface files
-FSDIR=/Applications/freesurfer/subjects/fsaverage
+FSDIR=${FREESURFER_HOME}/subjects/fsaverage
 
 # Gifti inflated surface
 sudo mris_convert ${FSDIR}/surf/rh.inflated ${FSDIR}/inflated_rh.surf.gii

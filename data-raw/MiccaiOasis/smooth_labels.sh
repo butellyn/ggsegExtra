@@ -8,7 +8,7 @@ export LABFILE=$1
 export SURFFILE=${2}
 export RESULT=${3}
 
-FSDIR=/Applications/freesurfer/subjects/fsaverage
+FSDIR=${FREESURFER_HOME}/subjects/fsaverage
 
 wb_command -label-export-table ${LABFILE} ${TD}/a
 #sed -n '0~2!p' ${TD}/a > ${TD}/names # This isn't working

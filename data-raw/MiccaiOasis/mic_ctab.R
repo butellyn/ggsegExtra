@@ -7,7 +7,7 @@
 library('RColorBrewer')
 library('gplots')
 
-#df <- read.csv("/Users/butellyn/Documents/hiLo/data/hilo_images/jlf_lookup/jlf_lookup.csv")
+#df <- read.csv("/jlf_lookup.csv")
 
 
 ######### GGSEG style, not working #########
@@ -16,11 +16,11 @@ library('gplots')
 #colnames(df) <- c("idx", "labels", "hex")
 
 
-#write.csv(df, "/home/ebutler/miccai_ggseg/output/ho.annot.ctab", row.names=FALSE)
+#write.csv(df, "ho.annot.ctab", row.names=FALSE)
 
 ######### Freesurfer style #########
 
-df <- read.csv("/Users/butellyn/Documents/hiLo/data/hilo_images/jlf_lookup/jlf_lookup.csv")
+df <- read.csv("jlf_lookup.csv")
 df <- df[df$ROI_INDEX %in% 100:207,]
 rownames(df) <- 1:nrow(df)
 df <- df[!(df$ROI_INDEX %in% c(110, 111, 126, 127, 130, 131, 158, 159, 188, 189)),]
@@ -41,7 +41,7 @@ df$A <- 0
 df$ROI_INDEX <- as.integer(df$ROI_INDEX)
 
 
-write.table(df, "/Users/butellyn/Documents/hiLo/data/ggseg_miccai/output/miccaiCtab.txt", row.names=FALSE, col.names=FALSE)
+write.table(df, "miccaiCtab.txt", row.names=FALSE, col.names=FALSE)
 
 df_R <- df[c(1, seq(2, nrow(df), 2)),]
 df_L <- df[c(1, seq(3, nrow(df), 2)),]
@@ -50,5 +50,5 @@ df_L <- df[c(1, seq(3, nrow(df), 2)),]
 df_R$ROI_INDEX <- 0:(nrow(df_R)-1)
 df_L$ROI_INDEX <- 0:(nrow(df_L)-1)
 
-write.table(df_R, "/Users/butellyn/Documents/hiLo/data/ggseg_miccai/output/miccaiCtab_R.txt", row.names=FALSE, col.names=FALSE)
-write.table(df_L, "/Users/butellyn/Documents/hiLo/data/ggseg_miccai/output/miccaiCtab_L.txt", row.names=FALSE, col.names=FALSE)
+write.table(df_R, "miccaiCtab_R.txt", row.names=FALSE, col.names=FALSE)
+write.table(df_L, "miccaiCtab_L.txt", row.names=FALSE, col.names=FALSE)
