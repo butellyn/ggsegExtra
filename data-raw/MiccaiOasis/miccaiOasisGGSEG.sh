@@ -18,7 +18,7 @@ mri_vol2surf --sd ${SUBJECTS_DIR} --src ${INDIR}/mniMICCAI_LabelsCortical0.nii.g
 mri_vol2surf --sd ${SUBJECTS_DIR} --src ${INDIR}/mniMICCAI_LabelsCortical0.nii.gz --mni152reg --out ${OUTDIR}/output/miccai_2012_surf_lh.mgh --hemi lh --projfrac 0.5
 
 # Create a color table. Run an R session in ${SUBJECTS_DIR}/fsaverage/mri
-Rscript ${SCRDIR}/ggseg_miccai/mic_ctab.R
+Rscript ${SCRDIR}/mic_ctab.R
 
 # Create a series of individual label files
 mkdir ${OUTDIR}/Labels
