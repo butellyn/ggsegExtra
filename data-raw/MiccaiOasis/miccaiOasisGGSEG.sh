@@ -24,8 +24,8 @@ Rscript ${SCRDIR}/ggseg_miccai/mic_ctab.R
 mkdir ${OUTDIR}/Labels
 nums=`seq 1 108` # old: 100 207
 for i in $nums ; do
-	mri_vol2label --c ${OUTDIR}/output/miccai_2012_surf_rh.mgh --id ${i} --surf fsaverage rh --l ${OUTDIR}/Labels/rh_MIC_${i}.label ;
-	mri_vol2label --c ${OUTDIR}/output/miccai_2012_surf_lh.mgh --id ${i} --surf fsaverage lh --l ${OUTDIR}/Labels/lh_MIC_${i}.label ;
+	mri_vol2label --c ${OUTDIR}/miccai_2012_surf_rh.mgh --id ${i} --surf fsaverage rh --l ${OUTDIR}/Labels/rh_MIC_${i}.label ;
+	mri_vol2label --c ${OUTDIR}/miccai_2012_surf_lh.mgh --id ${i} --surf fsaverage lh --l ${OUTDIR}/Labels/lh_MIC_${i}.label ;
 done
 
 # Create annotation files
@@ -71,8 +71,8 @@ sudo mris_convert --annot ${FSDIR}/label/rh.mic.annot ${FSDIR}/surf/rh.inflated 
 sudo mris_convert --annot ${FSDIR}/label/lh.mic.annot ${FSDIR}/surf/lh.inflated ${FSDIR}/fsaverage_mic_lh.label.gii
 
 # Fill and smooth
-${SCRDIR}/ggseg_miccai/smooth_labels.sh ${FSDIR}/fsaverage_mic_rh.label.gii ${FSDIR}/inflated_rh.surf.gii ${OUTDIR}/fsaverage_mic_rh.smooth.label.gii
-${SCRDIR}/ggseg_miccai/smooth_labels.sh ${FSDIR}/fsaverage_mic_lh.label.gii ${FSDIR}/inflated_lh.surf.gii ${OUTDIR}/fsaverage_mic_lh.smooth.label.gii
+${SCRDIR}/smooth_labels.sh ${FSDIR}/fsaverage_mic_rh.label.gii ${FSDIR}/inflated_rh.surf.gii ${OUTDIR}/fsaverage_mic_rh.smooth.label.gii
+${SCRDIR}/smooth_labels.sh ${FSDIR}/fsaverage_mic_lh.label.gii ${FSDIR}/inflated_lh.surf.gii ${OUTDIR}/fsaverage_mic_lh.smooth.label.gii
 
 sudo mv ${OUTDIR}/fsaverage_mic_rh.smooth.label.gii ${FSDIR}/fsaverage_mic_rh.smooth.label.gii
 sudo mv ${OUTDIR}/fsaverage_mic_lh.smooth.label.gii ${FSDIR}/fsaverage_mic_lh.smooth.label.gii
@@ -86,7 +86,7 @@ freeview --surface ${FREESURFER_HOME}/subjects/fsaverage/surf/rh.inflated:annot=
 # ^ Not working... color label problem... or annot problem
 
 #Screengrabs with tksurfer. This can be rerun somewhere other than fsaverage.
-${SCRDIR}/ggseg_miccai/mkPics.sh
+${SCRDIR}/mkPics.sh
 
 # Rename the unknowns to medial wall... no unknowns
 #mv ${OUTDIR}/miccaiPics/lh_\?\?\?_med.tif ${OUTDIR}/miccaiPics/lh_medialwall_med.tif
