@@ -7,15 +7,15 @@ library(rmapshaper)
 library(freesurfer)
 
 
-mri_vol2surf("HarvardOxford-Cortical",
-  outfile = "test.rh.mgh",
-  opts = c("--mni152reg", "--hemi rh", "--projfrac 0.5"),
-  verbose = TRUE)
+#mri_vol2surf("HarvardOxford-Cortical",
+#  outfile = "test.rh.mgh",
+#  opts = c("--mni152reg", "--hemi rh", "--projfrac 0.5"),
+#  verbose = TRUE)
 
-mri_vol2surf("HarvardOxford-Cortical",
-             outfile = "test.lh.mgh",
-             opts = c("--mni152reg", "--hemi lh", "--projfrac 0.5"),
-             verbose = TRUE)
+#mri_vol2surf("HarvardOxford-Cortical",
+#             outfile = "test.lh.mgh",
+#             opts = c("--mni152reg", "--hemi lh", "--projfrac 0.5"),
+#             verbose = TRUE)
 # January 22, 2020: ^ This function doesn't seem to exist in the freesurfer package
 # January 22, 2020: Trouble installing V8
 # January 23, 2020: Fixed by using install.packages('V8', type='binary')
@@ -39,7 +39,7 @@ mic.df <- mutate(mic.df, area=stringr::str_replace_all(area, "\\.+", " "))
 # January 24, 2020: Area and label may need to be changed to names of the regions, instead of indices
 
 rasterobjs <- map(pics, raster)
-map_dbl(rasterobjs, cellStats, stat=max) # January 24, 2020: This seems weird
+map_dbl(rasterobjs, cellStats, stat=max)
 
 ## check the maximum value
 cellStats(rasterobjs[[1]], stat = max) # January 24, 2020: This is zero... because it is a blank image, which is appropriate

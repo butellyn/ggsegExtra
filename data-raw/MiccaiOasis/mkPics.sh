@@ -8,8 +8,10 @@ trap 'rm -rf ${TD}; exit 0' 0 1 2 3 14 15
 # import into ggseg easy
 
 # Desikan atlas version
-#export DEST=PicsDesikan
 OUTDIR=`pwd`
+SCRDIR=`pwd`
+OUTDIR=/Users/butellyn/Documents/hiLo/data/ggseg_miccai
+SCRDIR=/Users/butellyn/Documents/ggsegExtra/data-raw/MiccaiOasis
 export DEST=${OUTDIR}/miccaiPics
 
 mkdir -p ${DEST}
@@ -25,7 +27,7 @@ for hemi in lh rh ; do
 	     export INLABFILE=${OUTDIR}/Labels/${hemi}_MIC_${region}.label
        export REGNAME=${region}
 	     echo ${INLABFILE}
-	     tksurfer fsaverage ${hemi} inflated -tcl grab.tcl
+	     tksurfer fsaverage ${hemi} inflated -tcl ${SCRDIR}/grab.tcl
 	     convert ${DEST}/fsaverage_infl_${hemi}_${region}_lat.tif -colorspace HSL -separate ${TD}/lat_%d.tif
 	     convert ${TD}/lat_1.tif -threshold 10%  -define connected-components:verbose=true -define connected-components:area-threshold=20 -connected-components 8 -auto-level -depth 8 $DEST/${hemi}_${region}_lat.tif
 	     convert ${DEST}/fsaverage_infl_${hemi}_${region}_med.tif -colorspace HSL -separate ${TD}/med_%d.tif

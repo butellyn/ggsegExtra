@@ -24,8 +24,8 @@ function Smooth1()
     echo $i $METRICNAME
     wb_command -gifti-label-to-roi ${LABFILE} ${METRICNAME} -key ${i}
     wb_command -metric-erode ${METRICNAME} ${SURFFILE} 2 ${METRICNAME}
-    wb_command -metric-remove-islands ${SURFFILE} ${METRICNAME} ${METRICNAME}
-    wb_command -metric-dilate ${METRICNAME} ${SURFFILE} 2 ${METRICNAME}
+    #wb_command -metric-remove-islands ${SURFFILE} ${METRICNAME} ${METRICNAME}
+    wb_command -metric-dilate ${METRICNAME} ${SURFFILE} 50 ${METRICNAME} # January 24, 2020: Probably need to use the "nearest" flag
 }
 
 #module load gnuparallel/20190122 # Can't seem to get a Mac version of gnuparallel
