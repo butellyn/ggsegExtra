@@ -51,9 +51,9 @@ done
 # January 16, 2020: Splitting the color lookup tables by right and left, and ignoring mapping of indices, all of the right
 # labels are showing up on the right and all of the left on the left, but they still aren't mapping correctly. It does not
 # seem like freesurfer respects indices when mapping labels to an image, and instead seems to go based on some order.
-sudo mris_label2annot --sd ${SUBJECTS_DIR} --s fsaverage --ctab ${OUTDIR}/output/miccaiCtab_L.txt ${LABS_L} --h lh --a mic
+sudo mris_label2annot --sd ${SUBJECTS_DIR} --s fsaverage --ctab ${OUTDIR}/miccaiCtab_L.txt ${LABS_L} --h lh --a mic
 
-sudo mris_label2annot --sd ${SUBJECTS_DIR} --s fsaverage --ctab ${OUTDIR}/output/miccaiCtab_R.txt ${LABS_R} --h rh --a mic
+sudo mris_label2annot --sd ${SUBJECTS_DIR} --s fsaverage --ctab ${OUTDIR}/miccaiCtab_R.txt ${LABS_R} --h rh --a mic
 
 # Check how the surface looks - note lots of holes etc.
 # Tons of holes, and labels don't line up. Ah well!
@@ -96,4 +96,4 @@ ${SCRDIR}/mkPics.sh
 
 # Finally, let the R spatial tools work their magic...
 # This creates ho_atlas.Rda which contains a couple of data frames, almost ready for inclusion in ggsegExtra.
-Rscript ${SCRDIR}/ggseg_miccai/mkMic.R
+Rscript ${SCRDIR}/mkMic.R

@@ -18,15 +18,16 @@ mri_vol2surf("HarvardOxford-Cortical",
              verbose = TRUE)
 # January 22, 2020: ^ This function doesn't seem to exist in the freesurfer package
 # January 22, 2020: Trouble installing V8
+# January 23, 2020: Fixed by using install.packages('V8', type='binary')
 
-
-OUTDIR=""
-pics <- list.files(path=paste0(OUTDIR, "/miccaiPics"), full.names = TRUE)
+OUTDIR="/Users/butellyn/Documents/hiLo/data/ggseg_miccai/"
+#OUTDIR=""
+pics <- list.files(path=paste0(OUTDIR, "miccaiPics"), full.names = TRUE)
 pics <- pics[!(pics %in% grep("fsaverage_", pics, value=TRUE))]
 
 region <- basename(pics)
 region <- stringr::str_remove(region, "\\.tif")
-origlabel <- region
+origlabel <- region # Should labels that are not medial/lateral be removed at this point?
 
 hemi <- stringr::str_extract(region, "^.h")
 region <- stringr::str_remove(region, "^.h_")
@@ -35,12 +36,13 @@ region <- stringr::str_remove(region, "_...$")
 origlabel <- stringr::str_remove(origlabel, "_...$")
 mic.df <- tibble(area=region, hemi=hemi, side=side, label=origlabel)
 mic.df <- mutate(mic.df, area=stringr::str_replace_all(area, "\\.+", " "))
+# January 24, 2020: Area and label may need to be changed to names of the regions, instead of indices
 
 rasterobjs <- map(pics, raster)
-map_dbl(rasterobjs, cellStats, stat=max)
+map_dbl(rasterobjs, cellStats, stat=max) # January 24, 2020: This seems weird
 
 ## check the maximum value
-cellStats(rasterobjs[[1]], stat = max)
+cellStats(rasterobjs[[1]], stat = max) # January 24, 2020: This is zero... because it is a blank image, which is appropriate
 mkContours <- function(rstobj){
   mx <- raster::cellStats(rstobj, stat=max)
   # Filter out the blank images
@@ -48,12 +50,12 @@ mkContours <- function(rstobj){
     return(NULL)
   }
   tmp.rst <- rstobj
-  tmp.rst[tmp.rst == 0] <- NA
+  tmp.rst[tmp.rst == 0] <- NA # January 24, 2020: 0s getting replaced with 255
 
   ## levels = 50 is to remove the occasional edge point that has
   ## non zero hue.
   #cntr <- raster::rasterToPolygons(rstobj, fun = function(X)X>100, dissolve=TRUE)
-  g <- sf::st_as_sf(sf::st_as_stars(tmp.rst), merge=TRUE, connect8=TRUE)
+  g <- sf::st_as_sf(st_as_stars(tmp.rst), merge=TRUE, connect8=TRUE)
   ## Is it a multipolygon? Keep the biggest bit
   ## Small parts are usually corner connected single voxels
   if (nrow(g)>1) {
@@ -61,15 +63,14 @@ mkContours <- function(rstobj){
     biggest <- which.max(gpa)
     g <- g[biggest,]
   }
-  g <-st_sf(g)
+  g <- st_sf(g)
   names(g)[[1]] <- "region"
   g$region <- names(rstobj)
   return(g)
-
 }
 
-
 contourobjs <- map(rasterobjs, mkContours)
+# January 24, 2020: ^ Error: 'st_as_stars' is not an exported object from 'namespace:sf'... got rid of 'sf::'
 kp <- !map_lgl(contourobjs, is.null)
 
 contourobjsDF <- do.call(rbind, contourobjs)
