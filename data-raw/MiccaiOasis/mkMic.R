@@ -103,7 +103,7 @@ mic.df.panes <- rbind(mic.dfD, mic.dfA, mic.dfB, mic.dfC)
 #mic.df.panes.simple <- st_simplify(mic.df.panes, preserveTopology = TRUE, dTolerance=0.75)
 mic.df.panes.simple <- rmapshaper::ms_simplify(mic.df.panes)
 
-plot(mic.df.panes.simple)
+plot(mic.df.panes.simple) # January 24, 2020: Still a ton of holes, but getting there!
 
 library(ggseg)
 library(ggsegExtra)
