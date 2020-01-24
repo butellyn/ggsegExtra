@@ -120,7 +120,7 @@ mic.df.final <- mutate(mic.df.panes.simple,
 mic.df.final$geometry <- NULL
 mic.df.final <- unnest(mic.df.final, .drop=TRUE)
 mic.df.final <- rename(mic.df.final, long=X, lat=Y)
-ggseg(atlas=mic.df.final, mapping=aes(fill=area), color="white") +
+p <- ggseg(atlas=mic.df.final, mapping=aes(fill=area), color="white") +
   theme(legend.position = "none")
 
 save(mic.df.panes.simple, mic.df.final, file="mic_atlases.Rda")
