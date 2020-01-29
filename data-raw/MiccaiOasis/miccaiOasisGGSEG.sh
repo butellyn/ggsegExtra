@@ -10,7 +10,7 @@ fslmaths ${INDIR}/mniMICCAI_LabelsWithWM.nii.gz -thr 100 -uthr 207 ${INDIR}/mniM
 fslmaths ${INDIR}/mniMICCAI_LabelsCortical.nii.gz -thr 99 -bin ${INDIR}/mniMICCAI_CorticalMask.nii.gz
 fslmaths ${INDIR}/mniMICCAI_CorticalMask.nii.gz -mul 99 ${INDIR}/mniMICCAI_CorticalMask99.nii.gz
 fslmaths ${INDIR}/mniMICCAI_LabelsCortical.nii.gz -sub ${INDIR}/mniMICCAI_CorticalMask99.nii.gz ${INDIR}/mniMICCAI_LabelsCortical0.nii.gz
-fslmaths ${INDIR}/mniMICCAI_LabelsCortical0.nii.gz -kernel sphere 3.5 -dilD ${INDIR}/mniMICCAI_LabelsCortical0_dilated.nii.gz
+fslmaths ${INDIR}/mniMICCAI_LabelsCortical0.nii.gz -kernel sphere 2 -dilD ${INDIR}/mniMICCAI_LabelsCortical0_dilated.nii.gz
 
 
 # Project volume to surface (trying 0 indexing)
@@ -19,6 +19,8 @@ if [ ! -d ${OUTDIR}/output ]; then mkdir ${OUTDIR}/output; fi
 mri_vol2surf --sd ${SUBJECTS_DIR} --src ${INDIR}/mniMICCAI_LabelsCortical0_dilated.nii.gz --mni152reg --out ${OUTDIR}/output/miccai_2012_surf_rh.mgh --hemi rh --projfrac 0.5
 
 mri_vol2surf --sd ${SUBJECTS_DIR} --src ${INDIR}/mniMICCAI_LabelsCortical0_dilated.nii.gz --mni152reg --out ${OUTDIR}/output/miccai_2012_surf_lh.mgh --hemi lh --projfrac 0.5
+
+# Would be great to get rid of off-side labels here
 
 # Create a color table. Run an R session in ${SUBJECTS_DIR}/fsaverage/mri
 Rscript ${SCRDIR}/mic_ctab.R

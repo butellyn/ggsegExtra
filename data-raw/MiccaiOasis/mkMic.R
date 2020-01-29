@@ -24,6 +24,12 @@ OUTDIR="/Users/butellyn/Documents/hiLo/data/ggseg_miccai/"
 #OUTDIR=""
 pics <- list.files(path=paste0(OUTDIR, "miccaiPics"), full.names = TRUE)
 pics <- pics[!(pics %in% grep("fsaverage_", pics, value=TRUE))]
+pics <- pics[!(pics %in% grep("old", pics, value=TRUE))]
+
+# January 29, 2020: Try getting rid of pics that bled over from opposite hemisphere
+pics <- pics[!(pics %in% c(grep("rh_2_", pics, value=TRUE), grep("rh_40_", pics, value=TRUE),
+  grep("rh_68_", pics, value=TRUE), grep("rh_88_", pics, value=TRUE), grep("lh_1_", pics, value=TRUE),
+  grep("lh_39_", pics, value=TRUE), grep("lh_67_", pics, value=TRUE), grep("lh_87_", pics, value=TRUE)))]
 
 region <- basename(pics)
 region <- stringr::str_remove(region, "\\.tif")
@@ -104,6 +110,7 @@ mic.df.panes <- rbind(mic.dfD, mic.dfA, mic.dfB, mic.dfC)
 mic.df.panes.simple <- rmapshaper::ms_simplify(mic.df.panes)
 
 plot(mic.df.panes.simple) # January 24, 2020: Still a ton of holes, but getting there!
+# January 29, 2020: If I only plot the left hemisphere, "sphere 2" seems to result in no missing labels, and minimal holes
 
 library(ggseg)
 library(ggsegExtra)
