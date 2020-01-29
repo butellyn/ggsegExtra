@@ -3,19 +3,19 @@ library(tidyverse)
 library(ggseg)
 
 # Put in region names
-lookup <- read.csv("/Users/butellyn/Documents/hiLo/data/hilo_images/jlf_lookup/jlf_lookup.csv")
+lookup <- read.csv("/Users/butellyn/Documents/ggsegExtra/data-raw/MiccaiOasis/jlf_lookup.csv")
 lookup <- lookup[94:201,]
 lookup$ROI_INDEX <- lookup$ROI_INDEX - 99
 rownames(lookup) <- 1:nrow(lookup)
 
 for (i in lookup$ROI_INDEX) {
   istr <- paste0("_", i, "_")
-  theserows <- rownames(mic.df.final[mic.df.final$region %in% grep(istr, mic.df.final$region, value=TRUE),])
-  mic.df.final$region <- gsub("100", mic.df.final$region
-
-
+  theserows <- which(c(mic.df.final$region %in% grep(istr, mic.df.final$region, value=TRUE)))
+  roi <- strsplit(as.character(lookup[i, "ROI_NAME"]), "_")[[1]][2]
+  mic.df.final[theserows, "region"] <- gsub(i, roi, mic.df.final[theserows[1], "region"])
+  mic.df.final[theserows, "area"] <- roi
+  mic.df.final[theserows, "label"] <- gsub(i, roi, mic.df.final[theserows[1], "label"])
 }
-
 
 micCort <- mic.df.final %>%
   mutate(hemi = case_when(hemi == "lh" ~ "left",
@@ -25,21 +25,30 @@ micCort <- mic.df.final %>%
          area = ifelse(grepl("wall", area), NA, area),
          pos = NA,
          atlas = "micCort",
-         area = gsub(" division", "", area),
-         area = gsub("anterior", "ant.", area),
-         area = gsub("posterior", "post.", area),
-         area = gsub(" formerly Supplementary Motor Cortex ", "", area),
-         area = gsub("Inferior", "Inf.", area),
-         area = gsub("inferior", "inf.", area),
-         area = gsub("Superior", "Sup.", area),
-         area = gsub("Lateral", "Lat.", area),
-         area = gsub("Middle", "Mid.", area),
-         area = gsub(" part", "", area),
          )
 
+         micCort$pos[1] <- list(x = 1)
+         for(i in 1:nrow(micCort)){
+           micCort$pos[[i]] = list(
+             stacked = list(
+               x = list(breaks = c(250, 900),
+                        labels = c("lateral", "medial")),
+               y = list(breaks = c(200,  600),
+                        labels = c("left", "right")), labs = list(
+                          y = "side", x = "hemisphere")),
+             dispersed = list(
+               x = list(
+                 breaks = c(580, 1800),
+                 labels = c("left", "right")),
+               y = list(breaks = NULL, labels = ""),
+               labs = list(y = NULL, x = "hemisphere")))
+         }
 
-micCort <- micCort %>%
-  unnest(ggseg) %>%
-  select(-.pos)
+#micCort <- micCort %>%
+#  unnest(ggseg) %>% #Error: `ggseg` must evaluate to column positions or names, not a function
+#  select(-.pos)
+
+
+
 micCort <- as_ggseg_atlas(micCort)
 usethis::use_data(micCort, internal = FALSE, overwrite = TRUE, compress = "xz")
